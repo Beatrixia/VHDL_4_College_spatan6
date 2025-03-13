@@ -17,7 +17,7 @@ architecture Behavioral of c2hz_clock is
 
 	signal tmp : STD_LOGIC;
   -- we use tmp to be the output process
-  -- we usally don't use "Cnt_out" directly to be process output
+  -- we usually don't use "Cnt_out" directly to be process output
 
 	signal tt_Clk : integer range 0 to 12499999 := 0;
   -- tt_Clk we use this signal to count the clock and the limit is its count range
