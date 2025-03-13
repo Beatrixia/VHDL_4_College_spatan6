@@ -3,6 +3,7 @@
 -- Module Name:    c2hz_clock - Behavioral 
 -- this is example of 2hz clock divider
 -- we use spartan6 with 50Mhz clk
+-- Change entity name to change file name (c2hz_clock)
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
