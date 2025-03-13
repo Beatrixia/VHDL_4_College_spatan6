@@ -2,6 +2,8 @@
 -- Create Date:    18:35:06 03/13/2025 
 -- Design Name:    mux_7s with no S7_seg inside
 -- Module Name:    mux_7s - Behavioral 
+-- this MUX is ONLY FOR this project!!!
+-- this MUX require S7_seg(7_segment) to change bit from MOD(4bit) to S7_seg(8bit) before be in this input
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -9,7 +11,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity mux_7s is
     Port ( Dig1,Dig2 : in  STD_LOGIC_VECTOR (7 downto 0);
-			-- insert more Dig3.4.5.6 for more 7-Segment input to MOD
+				-- insert more Dig3.4.5.6 for more 7-Segment input to MOD
            Clk_in : in  STD_LOGIC;
            Dig_out : out  STD_LOGIC_VECTOR (7 downto 0);
            Seldig : out  STD_LOGIC_VECTOR (5 downto 0));
@@ -22,10 +24,7 @@ architecture Behavioral of mux_7s is
 	
 	signal tmp : STD_LOGIC_VECTOR (7 downto 0) := "00000000";
 	-- tmp use to set 7-secment digit to output (default is "00000000").
-	
-	signal shift : integer := 1;
-	-- shift is amount of shift that we want.
-	
+
 begin
 
 	setsel : process (Clk_in,sel)
