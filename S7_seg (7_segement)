@@ -2,6 +2,7 @@
 -- Create Date:    18:32:32 03/13/2025 
 -- Module Name:    S7_seg - Behavioral 
 -- This is HDL code for 7_segment with (DP)
+-- Change entity name to change file name (S7_seg)
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
