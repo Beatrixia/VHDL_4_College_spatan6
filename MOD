@@ -12,7 +12,7 @@ entity mod_10 is
     Port ( Clk_in,Rst,En : in  STD_LOGIC;
 			-- in this MOD we use En(Enable) to stop counting
 
-           Cnt : out  STD_LOGIC_VECTOR (3 downto 0);
+           Cnt_out : out  STD_LOGIC_VECTOR (3 downto 0);
 			-- this out put count to 16 (4bit)
 			-- in this project our 7_segment use 4bit input so we don't want to create another 7_segment then we use the same 4bit output
 
