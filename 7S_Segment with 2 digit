@@ -25,8 +25,8 @@ architecture Behavioral of S7_Segment_ADA_DIGIT is
 	
 	component mod_10_wTrig is
     Port ( Clk_in,Rst,En : in  STD_LOGIC;
-           Cnt10 : out  STD_LOGIC_VECTOR (3 downto 0);
-			  trig : out STD_LOGIC );
+           Cnt_out : out  STD_LOGIC_VECTOR (3 downto 0);
+			  Cry_out : out STD_LOGIC );
 	end component mod_10_wTrig;
 	
 	component S7_Seg is
@@ -78,15 +78,15 @@ begin
 	port map	(Clk_in => ic2hz,
 				Rst => Rst,
 				En => '1',
-				Cnt10 => modTx_1dig,
-				trig => EnTx_1dig);
+				Cnt_out => modTx_1dig,
+				Cry_out => EnTx_1dig);
 	
 	mod10_2dig : mod_10_wTrig
 	port map	(Clk_in => ic2hz,
 				Rst => Rst,
 				En => EnTx_1dig,
-				Cnt10 => modTx_2dig,
-				trig => open);
+				Cnt_out => modTx_2dig,
+				Cry_out => open);
 				
 	S7_seg_1dig : S7_Seg
 	port map (Cnt_in => modTx_1dig,
