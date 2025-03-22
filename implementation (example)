@@ -1,6 +1,6 @@
 //for main clock
 net Clk_in		loc = T8;
-
+net Rst			  loc = L3;
 //T1,2,3,4 is button 1234 T5 is Reset
 net T1			loc = C3;
 net T2			loc = D3;
