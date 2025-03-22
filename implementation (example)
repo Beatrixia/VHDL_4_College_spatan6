@@ -1,0 +1,33 @@
+//for main clock
+net Clk_in		loc = T8;
+
+//T1,2,3,4 is button 1234 T5 is Reset
+net T1			loc = C3;
+net T2			loc = D3;
+net T3			loc = E4;
+net T4			loc = E3;
+net T5			loc = L3;
+
+//for (DP)gfedcba 7_segment
+net S7_dig[0]	loc = C7;
+net S7_dig[1]	loc = E6;
+net S7_dig[2]	loc = C5;
+net S7_dig[3]	loc = F7;
+net S7_dig[4]	loc = D6;
+net S7_dig[5]	loc = E7;
+net S7_dig[6]	loc = D5;
+net S7_dig[7]	loc = C6;
+
+//for selecting what 7_segment
+net Digit[0]	loc = D8;
+net Digit[1]	loc = E8;
+net Digit[2]	loc = F9;
+net Digit[3]	loc = F10;
+net Digit[4]	loc = E10;
+net Digit[5]	loc = D9;
+
+//Led
+net LED[0]		loc = M6;
+net LED[1]		loc = P5;
+net LED[2]		loc = N5;
+net LED[3]		loc = P4;
