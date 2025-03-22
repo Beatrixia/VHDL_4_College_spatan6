@@ -61,7 +61,7 @@ begin
 		end if;
 	end process Counter;
 	
-	Cnt <= tt_Cnt;
+	Cnt_out <= tt_Cnt;
 	Cry_out <= tmp;
 
 end Behavioral;
