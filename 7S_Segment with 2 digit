@@ -93,7 +93,12 @@ begin
 				En => EnTx_1dig,
 				Cnt_out => modTx_2dig,
 				Cry_out => open);
-				
+	
+	-- for more mod_10 you have to add and gate to mix-up carry out and add signal
+	-- example
+	-- and_carry <= EnTx_1dig and EnTx_2dig; -- and EnTx_3dig and EnTx_4dig
+	-- if more 7_digit is more and
+	
 	S7_seg_1dig : S7_Seg
 	port map (Cnt_in => modTx_1dig,
 				Cnt_out => S7_segTx_1dig);
