@@ -11,8 +11,8 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity mux_7s is
     Port ( Dig1,Dig2 : in  STD_LOGIC_VECTOR (7 downto 0);
-				-- insert more Dig3.4.5.6 for more 7-Segment input to MOD
-           Clk_in : in  STD_LOGIC;
+		 -- insert more Dig3.4.5.6 for more 7-Segment input to MOD
+           Clk_in,En : in  STD_LOGIC;
            Dig_out : out  STD_LOGIC_VECTOR (7 downto 0);
            Seldig : out  STD_LOGIC_VECTOR (5 downto 0));
 end mux_7s;
@@ -24,6 +24,10 @@ architecture Behavioral of mux_7s is
 	
 	signal tmp : STD_LOGIC_VECTOR (7 downto 0) := "00000000";
 	-- tmp use to set 7-secment digit to output (default is "00000000").
+	
+	signal en_sel : STD_LOGIC_VECTOR (5 downto 0);
+	signal en_tmp : STD_LOGIC_VECTOR (7 downto 0);
+	-- this signal is for "sel" and "tmp" to process enable and be out put.
 
 begin
 
@@ -57,8 +61,18 @@ begin
 		end case;
 	end process setdig;
 	
-	Seldig <= sel;
-	Dig_out <= tmp;
+	enable : process (En,sel,tmp)
+	begin
+		if (En = '0') then
+			en_sel <= "000000";
+			en_tmp <= "00000000";
+		else
+			en_sel <= sel;
+			en_tmp <= tmp;
+		end if;
+	end process enable;
+	
+	Seldig <= en_sel;
+	Dig_out <= en_tmp;
 	
 end Behavioral;
-
