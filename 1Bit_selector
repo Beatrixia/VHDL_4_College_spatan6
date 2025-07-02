@@ -22,8 +22,8 @@ begin
 			tmp1 <= '1';
 			tmp2 <= '0';
 		else
-			tmp1 <= '1';
-			tmp2 <= '0';
+			tmp1 <= '0';
+			tmp2 <= '1';
 		end if;
 	end process;
 	
