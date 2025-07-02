@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------
--- Create Date:    18:00:23 03/13/2025 
+-- Create Date:    15:36:50 07/02/2025 
 -- Module Name:    c2hz_clock - Behavioral 
 -- this is example of 2hz clock divider
 -- we use spartan6 with 50Mhz clk
@@ -19,8 +19,11 @@ architecture Behavioral of c2hz_clock is
 	signal tmp : STD_LOGIC;
 	-- we use tmp to be the output process
 	-- we usually don't use "Cnt_out" directly to be process output
-
-	signal tt_Clk : integer range 0 to 12499999 := 0;
+	
+begin
+	
+	Clk_divider : Process (Clk_in,Rst)
+	variable tt_Clk : integer range 0 to 5 := 0;
 	-- tt_Clk we use this signal to count the clock and the limit is its count range
 	-- signal tt_Clk : integer;
 	-- we can use this instead to remove the limit
@@ -37,21 +40,17 @@ architecture Behavioral of c2hz_clock is
 	-- 2499999 for 10Hz
 	-- 24999999 for 1Hz
 	-- change at "if (tt_Clk = 12499999) then" too  !!!! it's the main part !!!!
-
-begin
-	
-	Clk_divider : Process (Clk_in, Rst ,tt_clk)
 	begin
 		if (Rst = '0') then
 				tmp <= '0';
-				tt_Clk <= 0;
+				tt_Clk := 0;
 		elsif (rising_edge(Clk_in)) then
-			if (tt_Clk = 12499999) then
+			if (tt_Clk = 5) then
 			-- change the "12499999" if we want to change the hz of divider
-				tt_Clk <= 0;
+				tt_Clk := 0;
 				tmp <= not tmp;
 			else
-				tt_Clk <= tt_Clk + 1;
+				tt_Clk := tt_Clk + 1;
 				tmp <= tmp;
 			end if;
 		end if;
@@ -60,4 +59,3 @@ begin
 	Clk_out <= tmp;
 	
 end Behavioral;
-
