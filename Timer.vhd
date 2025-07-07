@@ -49,8 +49,10 @@ begin
 
             if (rising_edge(Clk_in)) then
 
-                if (tt_cnt = "0000" and En_repeater = '1') then
-                    tt_cnt <= "1001";
+                if (tt_cnt = "0000") then
+                    if (En_repeater = '1') then
+                        tt_cnt <= "1001";
+                    end if;
                 elsif (Rx_trig = '1') then
                     tt_cnt <= tt_cnt - 1;
                 end if;
