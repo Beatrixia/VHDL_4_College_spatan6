@@ -59,7 +59,7 @@ begin
 
             end if;
         end if;
-    end process Timer ;
+    end process Timer;
     
     Send_trig : process(tt_cnt)
     begin
