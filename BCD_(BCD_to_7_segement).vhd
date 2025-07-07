@@ -7,12 +7,12 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-entity S7_seg is
+entity BCD is
     Port ( Cnt_in : in  STD_LOGIC_VECTOR (3 downto 0);
            Cnt_out : out  STD_LOGIC_VECTOR (7 downto 0));
-end S7_seg;
+end BCD;
 
-architecture Behavioral of S7_seg is
+architecture Behavioral of BCD is
 	
 	signal tmp : STD_LOGIC_VECTOR ( 7 downto 0 );
   -- we use tmp to be the output process
