@@ -79,8 +79,8 @@ begin
         end if;
     end process Send_stat;
 
-Tx_trig <= sig_trig;
-Tx_stat <= sig_stat;
-Cnt <= tt_cnt;
+	Tx_trig <= sig_trig;
+	Tx_stat <= sig_stat;
+	Cnt <= tt_cnt;
 
 end architecture Behavioral;
