@@ -1,8 +1,8 @@
 ----------------------------------------------------------------------------------
 -- Create Date:    21:04:00 07/07/2025 
 -- Module Name:    Timer - Behavioral
--- !! Have to change "Timer" at 10,14,28 name to use it propertly !!
--- !! Change timer at 44 !!
+-- !! Have to change "Timer" at 10,14,29 name to use it propertly !!
+-- !! Change timer at 45 !!
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
