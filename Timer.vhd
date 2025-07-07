@@ -43,7 +43,6 @@ begin
         if (Rst = '0') then
 
             tt_cnt <= "1001"; -- Please change "1001" with time of timer with binary
-            sig_trig <= '0';
 
         elsif (En = '1') then
 
@@ -75,7 +74,7 @@ begin
         if (tt_cnt = "0000") then
             sig_stat <= '0';
         else
-            sig_trig <= '1';
+            sig_stat <= '1';
         end if;
     end process Send_stat;
 
