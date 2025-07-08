@@ -26,8 +26,8 @@ net Digit[3]	loc = F10;
 net Digit[4]	loc = E10;
 net Digit[5]	loc = D9;
 
-//Led
-net LED[0]		loc = M6;
-net LED[1]		loc = P5;
-net LED[2]		loc = N5;
-net LED[3]		loc = P4;
+//Led at board
+net LED[3]		loc = M6;
+net LED[2]		loc = P5;
+net LED[1]		loc = N5;
+net LED[0]		loc = P4;
