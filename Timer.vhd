@@ -47,15 +47,15 @@ begin
         elsif (En = '1') then
 
             if (rising_edge(Clk_in)) then
-
-                if (tt_cnt = "0000") then
-                    if (En_repeater = '1') then
-                        tt_cnt <= "1001";
-                    end if;
-                elsif (Rx_trig = '1') then
-                    tt_cnt <= tt_cnt - 1;
-                end if;
-
+				if (Rx_trig = '1') then
+	                if (tt_cnt = "0000") then
+	                    if (En_repeater = '1') then
+	                        tt_cnt <= "1001";
+	                    end if;
+	                else
+	                    tt_cnt <= tt_cnt - 1;
+	                end if;
+				end if;
             end if;
         end if;
     end process Timer;
