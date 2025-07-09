@@ -31,3 +31,28 @@ net LED[3]		loc = M6;
 net LED[2]		loc = P5;
 net LED[1]		loc = N5;
 net LED[0]		loc = P4;
+////////////////////////////////////////////////////////////////////////////////////////
+//For Timer_main
+
+net Clk			loc = T8;
+net Rst			loc = L3;
+
+net Sw1			loc = C3;
+
+net S7_out[0]	loc = C7;
+net S7_out[1]	loc = E6;
+net S7_out[2]	loc = C5;
+net S7_out[3]	loc = F7;
+net S7_out[4]	loc = D6;
+net S7_out[5]	loc = E7;
+net S7_out[6]	loc = D5;
+net S7_out[7]	loc = C6;
+
+net Dig_out[0]	loc = D8;
+net Dig_out[1]	loc = E8;
+net Dig_out[2]	loc = F9;
+net Dig_out[3]	loc = F10;
+net Dig_out[4]	loc = E10;
+net Dig_out[5]	loc = D9;
+
+net Led			loc = M6;
