@@ -43,13 +43,11 @@ architecture Behavioral of Timer_main is
 	
 	component BCD is
 		 Port ( Cnt_in : in  STD_LOGIC_VECTOR (3 downto 0);
-				  En : in STD_LOGIC;
 				  Cnt_out : out  STD_LOGIC_VECTOR (7 downto 0));
 	end component BCD;
 	
 	component BCD_dot is
 		 Port ( Cnt_in : in  STD_LOGIC_VECTOR (3 downto 0);
-				  En : in STD_LOGIC;
 				  Cnt_out : out  STD_LOGIC_VECTOR (7 downto 0));
 	end component BCD_dot;
 	
@@ -132,7 +130,7 @@ begin
 					 Rst => Rst, 
 					 En => '1', 
 					 En_repeater => Timer3_tx_stat, 
-					 Rx_trig => Timer1_tx_trig,
+					 Rx_trig => Timer1_tx_trig and itoggle_sw,
 					 Tx_trig => Timer2_tx_trig, 
 					 Tx_stat => Timer2_tx_stat,
 					 Cnt => Timer2_cnt);
@@ -142,24 +140,21 @@ begin
 					 Rst => Rst, 
 					 En => '1', 
 					 En_repeater => '0', 
-					 Rx_trig => Timer_12_trig,
+					 Rx_trig => Timer_12_trig and itoggle_sw,
 					 Tx_trig => Timer3_tx_trig, 
 					 Tx_stat => Timer3_tx_stat,
 					 Cnt => Timer3_cnt);
 	
 	timer1_BCD : BCD
 	Port map 	(Cnt_in => Timer1_cnt,
-					 En => Rst,
 					 Cnt_out => ibcd1_7seg_out);
 	
 	timer2_BCD : BCD
 	Port map 	(Cnt_in => Timer2_cnt,
-					 En => Rst,
 					 Cnt_out => ibcd2_7seg_out);
 	
 	timer3_BCD : BCD_dot
 	Port map 	(Cnt_in => Timer3_cnt,
-					 En => Rst,
 					 Cnt_out => ibcd3_7seg_out);
 	
 	Sw_1 : Toggle_switch
