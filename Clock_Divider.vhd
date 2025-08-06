@@ -22,7 +22,7 @@ architecture Behavioral of c2hz_clock is
 	
 begin
 	
-	Clk_divider : Process (Clk_in,Rst)
+	clk_divider : Process (clk_in, rst)
 	variable tt_Clk : integer range 0 to 12499999 := 0;
 	-- tt_Clk we use this signal to count the clock and the limit is its count range
 	-- signal tt_Clk : integer;
@@ -41,10 +41,10 @@ begin
 	-- 24999999 for 1Hz
 	-- change at "if (tt_Clk = 12499999) then" too  !!!! it's the main part !!!!
 	begin
-		if (Rst = '0') then
+		if (rst = '0') then
 				tmp <= '0';
 				tt_Clk := 0;
-		elsif (rising_edge(Clk_in)) then
+		elsif (rising_edge(clk_in)) then
 			if (tt_Clk = 12499999) then
 			-- change the "12499999" if we want to change the hz of divider
 				tt_Clk := 0;
@@ -54,8 +54,8 @@ begin
 				tmp <= tmp;
 			end if;
 		end if;
-	end Process Clk_divider;
+	end Process clk_divider;
 	
-	Clk_out <= tmp;
+	clk_out <= tmp;
 	
 end Behavioral;
