@@ -10,8 +10,8 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity c2hz_clock is
-    Port ( Clk_in,Rst : in  STD_LOGIC;
-           Clk_out : out  STD_LOGIC);
+    Port ( clk_in, rst : in  STD_LOGIC;
+           clk_out : out  STD_LOGIC);
 end c2hz_clock;
 
 architecture Behavioral of c2hz_clock is
