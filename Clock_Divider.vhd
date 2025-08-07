@@ -23,7 +23,7 @@ architecture Behavioral of c2hz_clock is
 begin
 	
 	clk_divider : Process (clk_in, rst)
-	variable tt_Clk : integer range 0 to 12499999 := 0;
+	variable tt_Clk : integer := 0;
 	-- tt_Clk we use this signal to count the clock and the limit is its count range
 	-- signal tt_Clk : integer;
 	-- we can use this instead to remove the limit
