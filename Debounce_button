@@ -1,0 +1,42 @@
+----------------------------------------------------------------------------------
+-- Create Date:    15:11:13 08/07/2025 
+-- Module Name:    Debounce_button - Behavioral 
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+entity Debounce_button is
+    Port ( btn_in ,clk  : in  STD_LOGIC;
+           btn_out : out  STD_LOGIC);
+end Debounce_button;
+
+architecture Behavioral of Debounce_button is
+	signal prev_btn : std_logic;
+	signal stat_btn : std_logic;
+	signal DeBtnCnt : std_logic_vector (22 downto 0) := (others => '0');
+begin
+	
+	Debounce_button : process (clk ,btn_in ,prev_btn ,stat_btn)
+	begin
+		if (rising_edge(clk)) then
+			if (stat_btn = '1') then
+				if (DeBtnCnt(22) = '1') then
+					DeBtnCnt <= (others => '0');
+					stat_btn <= '0';
+				else
+					DeBtnCnt <= DeBtnCnt + 1;
+				end if;
+			else
+				if (btn_in /= prev_btn) then
+					stat_btn <= '1';
+				end if;
+				prev_btn <= btn_in;
+			end if;
+		end if;
+	end process Debounce_button;
+	
+	btn_out <= prev_btn;
+	
+end Behavioral;
+
