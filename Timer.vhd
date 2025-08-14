@@ -1,4 +1,6 @@
 ----------------------------------------------------------------------------------
+-- stand alone --
+-- 7segments --
 -- Create Date:    21:04:00 07/07/2025 
 -- Module Name:    Timer - Behavioral
 -- !! Have to change "Timer" at 10,14,29 name to use it propertly !!
