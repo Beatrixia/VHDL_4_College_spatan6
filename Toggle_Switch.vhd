@@ -1,4 +1,5 @@
 ----------------------------------------------------------------------------------
+-- component --
 -- Create Date:    15:17:48 07/08/2025 
 -- Module Name:    Toggle_switch - Behavioral 
 -- Toggle switch with clock to not bouncing
