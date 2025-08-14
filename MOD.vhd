@@ -1,4 +1,5 @@
 ----------------------------------------------------------------------------------
+-- component --
 -- Create Date:    18:12:54 03/13/2025 
 -- Module Name:    mod_10 - Behavioral
 -- this mod_10 is 4 bit output 
