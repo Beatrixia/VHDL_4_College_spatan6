@@ -1,4 +1,5 @@
 ----------------------------------------------------------------------------------
+-- component --
 -- Create Date:    15:36:50 07/02/2025 
 -- Module Name:    c2hz_clock - Behavioral 
 -- this is example of 2hz clock divider
