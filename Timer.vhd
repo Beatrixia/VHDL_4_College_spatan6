@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------
--- stand alone --
+-- component --
 -- 7segments --
 -- Create Date:    21:04:00 07/07/2025 
 -- Module Name:    Timer - Behavioral
