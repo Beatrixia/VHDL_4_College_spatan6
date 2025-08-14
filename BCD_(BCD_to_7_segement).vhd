@@ -1,4 +1,6 @@
 ----------------------------------------------------------------------------------
+-- component --
+-- 7segments --
 -- Create Date:    18:32:32 03/13/2025 
 -- Module Name:    S7_seg - Behavioral 
 -- This is HDL code for 7_segment with (DP)
