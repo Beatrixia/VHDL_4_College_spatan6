@@ -1,4 +1,6 @@
 ----------------------------------------------------------------------------------
+-- component --
+-- 7segments --
 -- Create Date:    18:35:06 03/13/2025 
 -- Design Name:    mux_7s with no S7_seg inside
 -- Module Name:    mux_7s - Behavioral 
