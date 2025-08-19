@@ -1,0 +1,67 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD_UNSIGNED.ALL;
+
+entity uart_A is
+	Port ( clk ,rst : in  STD_LOGIC;
+		   rx : in STD_LOGIC;
+		   tx : out  STD_LOGIC_VECTOR ( 7 downto 0));
+end uart_A;
+
+architecture Behavioral of uart_A is
+	
+	type state_type is (idle ,data);
+	signal state,next_state : state_type;
+	
+	signal cnt : std_logic_vector (3 downto 0) := x"01";
+	signal char : std_logic_vector (7 downto 0) := x"58";
+	
+begin
+
+	clk_state_decode : process (clk ,rst ,input ,state)
+	begin
+		if (rst = '0') then
+			state <= idle;
+		elsif (rising_edge(clk)) then
+			if (state = idle) then
+				if (rx = '0') then
+					state <= next_state;
+				else
+					state<= state;
+				end if;
+			else
+				state <= next_state;
+			end if;
+		end if;
+	end process clk_state_decode;
+	
+	next_state_decode : process (state ,input ,cnt)
+	begin
+		case (state) is
+			when idle => next_state <= idle;
+			when data =>
+				if (cnt(3) = '1') then
+					next_state <= stop;
+				else
+					next_state <= data;
+				end if;
+			when others => next_state <= idle;
+		end case;
+	end process next_state_decode;
+	
+	data_sig_decode : process (clk ,char ,cnt ,state)
+	begin
+		if (state = data) then
+			if (rising_edge(clk)) then
+				char <= rx & char(6 downto 0);
+				cnt <= cnt + '1';
+			end if;
+		else
+			char <= char;
+			cnt <= x"01";
+		end if;
+	end process data_sig_decode;
+	
+	tx <= char;
+	
+end Behavioral;
