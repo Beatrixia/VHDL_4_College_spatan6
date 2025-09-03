@@ -1,0 +1,19 @@
+Port btn4 ,btn1 : in  STD_LOGIC;
+signal pbtn1,pbtn2 : std_logic := '1';
+
+send_trig_process : process (btn2 ,btn1 ,clk ,rst ,pbtn1 ,pbtn4)
+	begin
+		if (rst = '0') then
+			itrig <= '0';
+		elsif (btn1 = '0' and pbtn1 = '1') then
+			itrig <= '1';
+			pbtn1 <= btn1;
+		elsif (btn4 = '0' and pbtn2 = '1') then
+			itrig <= '1';
+			pbtn2 <= btn2;
+		elsif (rising_edge(clk)) then
+			itrig <= '0';
+			pbtn1 <= btn1;
+			pbtn2 <= btn2;
+		end if;
+	end process send_trig_process;
