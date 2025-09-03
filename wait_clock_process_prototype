@@ -8,7 +8,7 @@ send_trig_process : process (btn2 ,btn1 ,clk ,rst ,pbtn1 ,pbtn4)
 		elsif (btn1 = '0' and pbtn1 = '1') then
 			itrig <= '1';
 			pbtn1 <= btn1;
-		elsif (btn4 = '0' and pbtn2 = '1') then
+		elsif (btn2 = '0' and pbtn2 = '1') then
 			itrig <= '1';
 			pbtn2 <= btn2;
 		elsif (rising_edge(clk)) then
