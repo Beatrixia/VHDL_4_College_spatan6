@@ -1,6 +1,10 @@
+----------------------------------------------------------------------------------
+-- Create Date:    08:36:46 09/07/2025 
+-- Module Name:    uart - Behavioral 
+----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD_UNSIGNED.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity uart is
 	Port ( input ,clk ,rst : in  STD_LOGIC;
@@ -43,7 +47,7 @@ begin
 		case (state) is
 			when idle =>
 				if (input = '0') then
-					next_state <= start;
+					next_state <= idle;
 				else
 					next_state <= data;
 				end if;
@@ -56,7 +60,7 @@ begin
 			when others => next_state <= idle;
 		end case;
 	end process next_state_decode;
-    
+	
 	flag_sig_decode : process (state)
 	begin
 		case (state) is
@@ -65,24 +69,25 @@ begin
 			when others => sig_flag <= '0';
 		end case;
 	end process flag_sig_decode;
-
-	data_sig_decode : process (clk ,char ,cnt ,state)
+	
+	flag <= sig_flag;
+	
+	data_sig_decode : process (clk ,char ,cnt ,state ,rx)
 	begin
-		if (state = data) then
-			if (rising_edge(clk)) then
-				char <= '0' & char(8 downto 1);
+		if (rising_edge(clk)) then
+			if (state = data) then
+				char <= '1' & char(8 downto 1);
 				cnt <= cnt + '1';
+			else
+				char <= rx & '0';
+				cnt <= x"0";
 			end if;
-		else
-			char <= rx & '1';
-			cnt <= x"0";
 		end if;
 	end process data_sig_decode;
 	
 	data_send : process (state ,char)
 	begin
 		case (state) is
-			when start => sig_out <= '0';
 			when data => sig_out <= char(0);
 			when others => sig_out <= '1';
 		end case;
