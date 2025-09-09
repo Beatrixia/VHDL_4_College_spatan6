@@ -1,0 +1,93 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD_UNSIGNED.ALL;
+
+entity uart is
+	Port ( input ,clk ,rst : in  STD_LOGIC;
+           flag : out STD_LOGIC;
+		   rx : in STD_LOGIC_VECTOR ( 7 downto 0);
+		   tx : out  STD_LOGIC);
+end uart;
+
+architecture Behavioral of uart is
+
+    type state_type is (idle ,data);
+	signal state,next_state : state_type;
+
+    signal sig_flag : std_logic;
+    signal sig_out : std_logic;
+	signal cnt : std_logic_vector (3 downto 0) := x"0";
+	signal char : std_logic_vector (8 downto 0) := "111111111";
+	
+begin
+
+    clk_state_decode : process (clk ,rst ,input ,state)
+	begin
+		if (rst = '0') then
+			state <= idle;
+		elsif (rising_edge(clk)) then
+			if (state = idle) then
+				if (input = '1') then
+					state <= next_state;
+				else
+					state<= state;
+				end if;
+			else
+				state <= next_state;
+			end if;
+		end if;
+	end process clk_state_decode;
+
+    next_state_decode : process (state ,input ,cnt)
+	begin
+		case (state) is
+			when idle =>
+				if (input = '0') then
+					next_state <= start;
+				else
+					next_state <= data;
+				end if;
+			when data =>
+				if (cnt(3) = '1') then
+					next_state <= idle;
+				else
+					next_state <= data;
+				end if;
+			when others => next_state <= idle;
+		end case;
+	end process next_state_decode;
+    
+    flag_sig_decode : process (state)
+    begin
+        case (state) is
+            when idle => sig_flag <= '1';
+            when data => sig_flag <= '0';
+            when others => sig_flag <= '0';
+        end case;
+    end process flag_sig_decode;
+
+    data_sig_decode : process (clk ,char ,cnt ,state)
+	begin
+		if (state = data) then
+			if (rising_edge(clk)) then
+				char <= '0' & char(8 downto 1);
+				cnt <= cnt + '1';
+			end if;
+		else
+			char <= rx & '1';
+			cnt <= x"111111111";
+		end if;
+	end process data_sig_decode;
+	
+	data_send : process (state ,char)
+	begin
+		case (state) is
+			when start => sig_out <= '0';
+			when data => sig_out <= char(0);
+			when others => sig_out <= '1';
+		end case;
+	end process data_send;
+	
+	tx <= sig_out;
+	
+end Behavioral;
