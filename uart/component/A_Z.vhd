@@ -1,10 +1,14 @@
+----------------------------------------------------------------------------------
+-- Create Date:    08:56:43 09/07/2025 
+-- Module Name:    A_Z - Behavioral 
+----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD_UNSIGNED.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity A_Z is 
 	Port ( input ,rst ,clk : in STD_LOGIC;
-		   tx : out STD_LOGIC_VECTOR (7 downto 0);'
+		   tx : out STD_LOGIC_VECTOR (7 downto 0);
 		   trig : in STD_LOGIC;
 		   flag : out STD_LOGIC);
 end A_Z;
@@ -28,28 +32,33 @@ begin
 		elsif (rising_edge(clk)) then
 			if (state = idle) then
 				if (input = '0' and trig = '1') then
-					state = next_state;
+					state <= next_state;
 				else
-					state = state;
+					state <= state;
+				end if;
+			elsif (state = send) then
+				if (trig = '1') then
+					state <= next_state;
 				end if;
 			else
-				state = next_state;
+				state <= next_state;
 			end if;
 		end if;
 	end process clk_state_decode;
 
-	next_state_decode: process(state)
+	next_state_decode: process(state ,cnt)
 	begin
 		case (state) is
 			when idle => next_state <= send;
 			when send => next_state <= plus;
 			when plus =>
-				if (integer = 25) then
+				if (cnt = 25) then
 					next_state <= idle;
 				else
-					next_state <= plus
+					next_state <= send;
 				end if;
-				when others => next_state <= idle;
+			when others => next_state <= idle;
+		end case;
 	end process next_state_decode;
 
 	sig_flag_decode : process(state, rst)
@@ -60,7 +69,9 @@ begin
 			sig_flag <= '0';
 		end if;
 	end process sig_flag_decode ;
-
+	
+	flag <= sig_flag;
+	
 	sig_data_decode: process(clk, rst ,state ,sig_data)
 	begin
 		if (rst = '0') then
@@ -73,7 +84,9 @@ begin
 			end if;
 		end if;
 	end process sig_data_decode;
-
+	
+	tx <= sig_data;
+	
 	cnt_decode : process(clk, rst, cnt)
 	begin
 		if (rst = '0') then
@@ -88,3 +101,4 @@ begin
 	end process cnt_decode ;
 
 end Behavioral;
+
