@@ -20,18 +20,14 @@ begin
 	variable tt_Clk : integer range 0 to 5208 := 0;
 	begin
 		if (rst = '0') then
-				tmp <= '0';
-				tt_Clk := 0;
+			tmp <= '0';
+			tt_Clk := 0;
 		elsif (rising_edge(clk_in)) then
 			if (tt_Clk = 5208) then
 				tt_Clk := 0;
-			else
-				tt_Clk := tt_Clk + 1;
-			end if;
-			
-			if (tt_Clk < 1000) then
 				tmp <= '1';
 			else
+				tt_Clk := tt_Clk + 1;
 				tmp <= '0';
 			end if;
 			
