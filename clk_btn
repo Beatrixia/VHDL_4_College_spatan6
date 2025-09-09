@@ -1,0 +1,44 @@
+----------------------------------------------------------------------------------
+-- Create Date:    12:12:51 09/09/2025 
+-- Module Name:    clk_btn - Behavioral 
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity clk_btn is
+    Port ( clk, rst, btn_in : in  STD_LOGIC;
+           btn_out : out  STD_LOGIC);
+end clk_btn;
+
+architecture Behavioral of clk_btn is
+	
+	signal s_btn : std_logic := '1';
+	signal tmp : std_logic := '1';
+	
+begin
+	
+	btn_in_decode : process (btn_in, clk, rst)
+	begin
+		if (rst = '0') then
+			s_btn <= '1';
+			tmp <= '1';
+		elsif (rising_edge(clk)) then
+			if (btn_in = '0') then
+				if (s_btn = '1') then
+					s_btn <= btn_in;
+					tmp <= btn_in;
+				else
+					s_btn <= btn_in;
+					tmp <= '1';
+				end if;
+			else
+				s_btn <= btn_in;
+				tmp <= btn_in;
+			end if;
+		end if;
+	end process btn_in_decode;
+	
+	btn_out <= tmp;
+	
+end Behavioral;
+
