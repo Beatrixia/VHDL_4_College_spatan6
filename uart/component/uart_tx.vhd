@@ -6,14 +6,14 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-entity uart is
+entity uart_tx is
 	Port ( trig ,clk ,rst : in  STD_LOGIC;
 		   flag : out STD_LOGIC;
 		   rx : in STD_LOGIC_VECTOR ( 7 downto 0);
 		   tx : out  STD_LOGIC);
-end uart;
+end uart_tx;
 
-architecture Behavioral of uart is
+architecture Behavioral of uart_tx is
 
 	type state_type is (idle ,data);
 	signal state,next_state : state_type;
