@@ -6,13 +6,13 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-entity rx_uart_echo is
+entity uart_rx is
     Port ( clk ,rst ,rx : in  STD_LOGIC;
            flag : out  STD_LOGIC;
 			  tx : out STD_LOGIC_VECTOR (7 downto 0));
-end rx_uart_echo;
+end uart_rx;
 
-architecture Behavioral of rx_uart_echo is
+architecture Behavioral of uart_rx is
 	
 	type state_type is (idle ,data ,send);
 	signal state,next_state : state_type;
