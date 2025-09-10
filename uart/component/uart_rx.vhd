@@ -40,11 +40,11 @@ begin
 			end if;
 		end if;
 	end process clk_state_decode;
-		
+
 	next_state_decode : process (state ,cnt)
 	begin
 		case (state) is
-			when idle => next_state <= idle;
+			when idle => next_state <= data;
 			when data =>
 				if (cnt(3) = '1') then
 					next_state <= send;
@@ -70,10 +70,11 @@ begin
 	data_sig_decode : process (clk ,char ,cnt ,state ,rst)
 	begin
 		if (rst = '0') then
-			char <= (others => '1');
+			char <= x"ff";
+			cnt <= x"1";
 		elsif (rising_edge(clk)) then
 			if (state = data) then
-				char <= rx & char(6 downto 0);
+				char <= rx & char(7 downto 1);
 				cnt <= cnt + '1';
 			else
 				cnt <= x"1";
@@ -82,7 +83,5 @@ begin
 	end process data_sig_decode;
 	
 	tx <= char;
-	
 
 end Behavioral;
-
