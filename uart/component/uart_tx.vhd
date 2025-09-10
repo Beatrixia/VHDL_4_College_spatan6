@@ -7,7 +7,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity uart is
-	Port ( input ,clk ,rst : in  STD_LOGIC;
+	Port ( trig ,clk ,rst : in  STD_LOGIC;
 		   flag : out STD_LOGIC;
 		   rx : in STD_LOGIC_VECTOR ( 7 downto 0);
 		   tx : out  STD_LOGIC);
@@ -25,13 +25,13 @@ architecture Behavioral of uart is
 	
 begin
 
-	clk_state_decode : process (clk ,rst ,input ,state)
+	clk_state_decode : process (clk ,rst ,trig ,state)
 	begin
 		if (rst = '0') then
 			state <= idle;
 		elsif (rising_edge(clk)) then
 			if (state = idle) then
-				if (input = '1') then
+				if (trig = '1') then
 					state <= next_state;
 				else
 					state<= state;
@@ -42,11 +42,11 @@ begin
 		end if;
 	end process clk_state_decode;
 
-	next_state_decode : process (state ,input ,cnt)
+	next_state_decode : process (state ,trig ,cnt)
 	begin
 		case (state) is
 			when idle =>
-				if (input = '0') then
+				if (trig = '0') then
 					next_state <= idle;
 				else
 					next_state <= data;
