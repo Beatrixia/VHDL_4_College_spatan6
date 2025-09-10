@@ -6,14 +6,14 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-entity uart_tx is
-	Port ( trig ,clk ,rst : in  STD_LOGIC;
+entity uart is
+	Port ( input ,clk ,rst : in  STD_LOGIC;
 		   flag : out STD_LOGIC;
 		   rx : in STD_LOGIC_VECTOR ( 7 downto 0);
 		   tx : out  STD_LOGIC);
-end uart_tx;
+end uart;
 
-architecture Behavioral of uart_tx is
+architecture Behavioral of uart is
 
 	type state_type is (idle ,data);
 	signal state,next_state : state_type;
@@ -25,13 +25,13 @@ architecture Behavioral of uart_tx is
 	
 begin
 
-	clk_state_decode : process (clk ,rst ,trig ,state)
+	clk_state_decode : process (clk ,rst ,input ,state)
 	begin
 		if (rst = '0') then
 			state <= idle;
 		elsif (rising_edge(clk)) then
 			if (state = idle) then
-				if (trig = '1') then
+				if (input = '1') then
 					state <= next_state;
 				else
 					state<= state;
@@ -42,11 +42,11 @@ begin
 		end if;
 	end process clk_state_decode;
 
-	next_state_decode : process (state ,trig ,cnt)
+	next_state_decode : process (state ,input ,cnt)
 	begin
 		case (state) is
 			when idle =>
-				if (trig = '0') then
+				if (input = '0') then
 					next_state <= idle;
 				else
 					next_state <= data;
