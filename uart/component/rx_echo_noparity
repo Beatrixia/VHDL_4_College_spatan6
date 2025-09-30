@@ -53,7 +53,7 @@ begin
 	begin
 		if (state = data) then
 			if (rising_edge(clk)) then
-				char <= rx & char(6 downto 0);
+				char <= rx & char(7 downto 1);
 				cnt <= cnt + '1';
 			end if;
 		else
