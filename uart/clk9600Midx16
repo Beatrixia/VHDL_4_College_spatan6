@@ -1,0 +1,104 @@
+----------------------------------------------------------------------------------
+-- Create Date:    07:54:36 09/30/2025 
+-- Module Name:    clk9600Midx16 - Behavioral 
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+entity clk9600Midx16 is
+
+	 Generic ( Divider : integer := 325;
+				  FracDivider : integer := 326;
+				  CntDivider : integer := 25;
+				  CntFracDivi : integer := 48);
+				  
+    Port ( Clk_in ,Rst ,Rx : in  STD_LOGIC;
+           Clk_out : out  STD_LOGIC);
+			  
+end clk9600Midx16;
+
+architecture Behavioral of clk9600Midx16 is
+	
+	constant sampling_rate : integer := 16;
+	constant midpoint : integer := 8;
+	
+	signal cnt : integer range 0 to (Divider + (FracDivider + Divider)):= 1;
+	signal cntx16 : integer range 0 to sampling_rate := 0;
+	signal acc : integer range 0 to CntFracDivi := 0;
+	
+	signal sigClk : std_logic := '0';
+	signal preClk : std_logic := '0';
+	
+begin
+	
+	acc_clk : process (Clk_in ,Rst ,Rx)
+	begin
+		if (rst = '0') then
+			cnt <= 1;
+			cntx16 <= 0;
+		elsif (rising_edge(Clk_in)) then
+		
+			if (cntx16 = 0) then
+				if (Rx = '0') then
+					cntx16 <= cntx16 + 1;
+				end if;
+			else
+				if (acc < CntDivider) then
+					if (cnt = Divider) then
+						cnt <= 1;
+						if (cntx16 = sampling_rate) then
+							cntx16 <= 1;
+						else
+							cntx16 <= cntx16 + 1;
+						end if;
+						acc <= acc + 1;
+					else
+						cnt <= cnt + 1;
+					end if;
+				else
+					if (cnt = FracDivider) then
+						cnt <= 1;
+						if (cntx16 = sampling_rate) then
+							cntx16 <= 1;
+						else
+							cntx16 <= cntx16 + 1;
+						end if;
+						if (acc = CntFracDivi) then
+							acc <= 1;
+						else
+							acc <= acc + 1;
+						end if;
+					else
+						cnt <= cnt + 1;
+					end if;
+				end if;
+			end if;
+			
+		end if;
+	end process acc_clk;
+	
+	sigClk_decode : process (Clk_in ,Rst)
+	begin
+		if (rst = '0') then
+			sigClk <= '0';
+			preClk <= '0';
+		elsif (rising_edge(Clk_in))then
+			if ( cntx16 = midpoint ) then
+				if (preClk = '0') then
+					sigClk <= '1';
+					preClk <= '1';
+				else
+					sigClk <= '0';
+				end if;
+			else
+				sigClk <= '0';
+				preClk <= '0';
+			end if;
+		end if;
+	end process sigClk_decode;
+	
+	Clk_out <= sigClk;
+	
+end Behavioral;
+
