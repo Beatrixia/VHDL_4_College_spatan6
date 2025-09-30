@@ -56,5 +56,5 @@ net Dig_out[4]	loc = E10;
 net Dig_out[5]	loc = D9;
 
 net Led			loc = M6;
-net rx      loc = D11;
+net rx      loc = C11;
 net tx      loc = D12;
