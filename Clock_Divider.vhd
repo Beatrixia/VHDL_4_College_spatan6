@@ -1,62 +1,52 @@
 ----------------------------------------------------------------------------------
--- component --
--- Create Date:    15:36:50 07/02/2025 
--- Module Name:    c2hz_clock - Behavioral 
--- this is example of 2hz clock divider
--- we use spartan6 with 50Mhz clk
--- Change entity name to change file name (c2hz_clock)
+-- Create Date:    15:44:20 09/30/2025 
+-- Module Name:    Clk_divider - Behavioral 
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
-entity c2hz_clock is
-    Port ( clk_in, rst : in  STD_LOGIC;
-           clk_out : out  STD_LOGIC);
-end c2hz_clock;
+entity Clk_divider is
+	Generic ( MainClock : integer := 50000000;
+				 Frequency : integer := 50);
+	Port ( Clk_in, Rst : in  STD_LOGIC;
+          Clk_out : out  STD_LOGIC);
+end Clk_divider;
 
-architecture Behavioral of c2hz_clock is
-
-	signal tmp : STD_LOGIC;
-	-- we use tmp to be the output process
-	-- we usually don't use "Cnt_out" directly to be process output
-	
+architecture Behavioral of Clk_divider is
+	constant TotalClock : integer := (MainClock/Frequency);
+	constant CntDivider : integer := (TotalClock/2) - 1;
+	signal rCnt : integer range 0 to CntDivider := 0;
+	signal rSigOut : STD_LOGIC := '0';
 begin
 	
-	clk_divider : Process (clk_in, rst)
-	variable tt_Clk : integer := 0;
-	-- tt_Clk we use this signal to count the clock and the limit is its count range
-	-- signal tt_Clk : integer;
-	-- we can use this instead to remove the limit
-	-- ":= 0" use for set starting count if we dont set it when simulation the tt_Clk is 'unknow'
-
-	-- 25M clk is the clock we want to divide but in a clock we has 2 state is '1' and '0' to use 'rising_edge' and 'falling_edge'
-	-- then we has to toggle clock at half clock that we want so 12500000 is total we want and -1 be cause we count 0 as 1
-
-	-- 24 for 1MHz
-	-- 24999 for 1kHz
-	-- 249999 for 100Hz
-	-- 499999 for 50Hz
-	-- 999999 for 25Hz
-	-- 2499999 for 10Hz
-	-- 24999999 for 1Hz
-	-- change at "if (tt_Clk = 12499999) then" too  !!!! it's the main part !!!!
+	U_rCnt : Process (Clk_in, Rst)
 	begin
-		if (rst = '0') then
-				tmp <= '0';
-				tt_Clk := 0;
-		elsif (rising_edge(clk_in)) then
-			if (tt_Clk = 12499999) then
-			-- change the "12499999" if we want to change the hz of divider
-				tt_Clk := 0;
-				tmp <= not tmp;
+		if (Rst = '0') then
+			rCnt <= 0;
+		elsif (Rising_edge(Clk_in)) then
+			if (rCnt = CntDivider) then
+				rCnt <= 0;
 			else
-				tt_Clk := tt_Clk + 1;
-				tmp <= tmp;
+				rCnt <= rCnt + 1;
 			end if;
 		end if;
-	end Process clk_divider;
+	end process U_rCnt;
 	
-	clk_out <= tmp;
+	U_rSigOut : Process (Clk_in, Rst)
+	begin
+		if (Rst = '0') then
+			rSigOut <= '0';
+		elsif (Rising_edge(Clk_in)) then
+			if (rCnt = CntDivider) then
+				rSigOut <= not rSigOut;
+			else
+				rSigOut <= rSigOut;
+			end if;
+		end if;
+	end process U_rSigOut;
+	
+	Clk_out <= rSigOut;
 	
 end Behavioral;
+
