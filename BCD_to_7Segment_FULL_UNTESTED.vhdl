@@ -25,7 +25,7 @@ end SevenSegmentStandAlone;
 architecture Behavioral of SevenSegmentStandAlone is
 	
 	Constant cScanRate			: integer := (gDigit*100);
-	Constant cScanTrigCnt		: integer := ((gMainClk/cScanRate)/2);
+	Constant cScanTrigCnt		: integer := (gMainClk/cScanRate);
 	Constant cBaseSEGSEL		: STD_LOGIC_VECTOR ((gMaxDigit-1) downto 0) := (gMaxDigit-1 downto 1 => '0') & '1' ;
 	Constant cSEGSEL			: STD_LOGIC_VECTOR ((gMaxDigit-1) downto 0) := STD_LOGIC_VECTOR(unsigned(cBaseSEGSEL) sll (gDigit - 1));
 	Constant cZeroVect			: STD_LOGIC_VECTOR ((gMaxDigit-1) downto 0) := (others => '0');
@@ -49,7 +49,7 @@ begin
 	
 	---- Scan (Rate/Trig) Zone ----
 	
-	U_ScanCnt : Process (iRst ,iClk ,rScanTrigCnt)
+	U_ScanCnt : Process (iRst ,iClk)
 	begin
 		if (iRst = '0') then
 			rScanTrigCnt <= cScanTrigCnt;
@@ -67,20 +67,20 @@ begin
 		if (iRst = '0') then
 			rScanTrig <= '0';
 		elsif (Rising_edge(iClk)) then
-			if (rScanTrigCnt = 0 ) then
-				rScanTrig <= not rScanTrig;
+			if (rScanTrigCnt = 1 ) then
+				rScanTrig <= '1';
 			else
-				rScanTrig <= rScanTrig;
+				rScanTrig <= '0';
 			end if;
 		end if;
 	end Process U_ScanTrig;
 	
 	---- Scan Zone ----
 	
-	U_Scan_SEGSEL : Process (iRst ,rScanTrig)
+	U_Scan_SEGSEL : Process (iRst ,iClk ,rScanTrig)
 	begin
 		if (iRst = '0') then
-			rSEGSEL <= (others => '0');
+			rSEGSEL <= cZeroVect;
 		elsif (Rising_edge(rScanTrig)) then
 			if ( rSEGSEL = cZeroVect ) then
 				rSEGSEL <= rSEGSEL((gMaxDigit-2) downto 0) & '1';
@@ -94,21 +94,21 @@ begin
 	
 	---- Split Hex into array ----
 	
-	Gen_SplitData : for i in 0 to gDigit-1 Generate
+	Gen_SplitData : for i in 1 to gDigit Generate
 	begin
-		rDigArr(i) <= iBiToHex(((gDigit*4)-1) downto (gDigit-1));
+		rDigArr(i-1) <= iBiToHex( ((i*4)-1) downto ((i*4)-4) );
 	end Generate Gen_SplitData;
 	
 	---- Select Number to Output ----
 	
-	U_OneHotInt : Process (rSEGSEL)
+	U_OneHotInt : process(rSEGSEL)
 	begin
-		for i in 0 to 5 loop
-			if (rSEGSEL(i) = '1') then
+		for i in 0 to gMaxDigit-1 loop
+			if rSEGSEL(i) = '1' then
 				rOneHotInt <= i;
 			end if;
 		end loop;
-	end Process U_OneHotInt;
+	end process U_OneHotInt;
 		
 	wSelectedHex <= rDigArr(rOneHotInt);
 	
